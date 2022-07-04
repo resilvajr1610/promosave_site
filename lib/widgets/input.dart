@@ -4,7 +4,7 @@ class Input extends StatelessWidget {
 
   final controller;
   final hint;
-  final fonts;
+  final fontSize;
   final keyboardType;
   final width;
   //List<TextInputFormatter>? inputFormatters=[];
@@ -17,13 +17,13 @@ class Input extends StatelessWidget {
   Input({
     required this.controller,
     required this.hint,
-    required this.fonts,
+    required this.fontSize,
     required this.keyboardType,
     required this.width,
     //this.inputFormatters,
     this.maxline,
-    required this.sizeIcon,
-    required this.icons,
+    this.sizeIcon = 0.0,
+    this.icons= Icons.save,
     required this.colorBorder,
     required this.background,
   });
@@ -55,7 +55,7 @@ class Input extends StatelessWidget {
               maxLines: maxline,
               style: TextStyle(
                 color: Colors.black54,
-                fontSize: this.fonts,
+                fontSize: this.fontSize,
               ),
               //inputFormatters:this.inputFormatters,
               decoration: InputDecoration(
@@ -63,12 +63,12 @@ class Input extends StatelessWidget {
                   hintText: this.hint,
                   hintStyle: TextStyle(
                     color: Colors.black54,
-                    fontSize: this.fonts,
+                    fontSize: this.fontSize,
                   ),
               ),
             ),
           ),
-          Icon(icons,size: sizeIcon),
+          sizeIcon!= 0.0?Icon(icons,size: sizeIcon):Container(),
         ],
       ),
     );

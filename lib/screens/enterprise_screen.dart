@@ -20,7 +20,10 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
 
     return Container(
       width: width,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: PaletteColor.greyLight,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: width*0.15,
                   controller: _controllerEmail,
                   hint:'E - mail',
-                  fonts: 14.0,
+                  fontSize: 14.0,
                   keyboardType: TextInputType.text,
                   colorBorder: PaletteColor.greyLight,
                   background: PaletteColor.greyLight,

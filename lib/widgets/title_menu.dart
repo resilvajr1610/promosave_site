@@ -31,9 +31,9 @@ class TitleMenu extends StatelessWidget {
         width: width,
         height: 58,
         decoration: BoxDecoration(
-          color: select ? PaletteColor.white: PaletteColor.primaryColor,
+          color: select ? PaletteColor.greyLight: PaletteColor.primaryColor,
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),topLeft: Radius.circular(20)),
-          border: Border.all(color: select ? PaletteColor.white : PaletteColor.primaryColor),
+          border: Border.all(color: select ? PaletteColor.greyLight : PaletteColor.primaryColor),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
