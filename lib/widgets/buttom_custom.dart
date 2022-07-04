@@ -3,7 +3,7 @@ import '../utils/export.dart';
 class ButtonCustom extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  final double size;
+  final double sizeText;
   final Color colorButton;
   final Color colorText;
   final Color colorBorder;
@@ -13,7 +13,7 @@ class ButtonCustom extends StatelessWidget {
   ButtonCustom({
     required this.onPressed,
     required this.text,
-    required this.size,
+    required this.sizeText,
     required this.colorButton,
     required this.colorText,
     required this.colorBorder,
@@ -35,7 +35,7 @@ class ButtonCustom extends StatelessWidget {
           ),
         onPressed: onPressed,
         child: Text(text,
-            style: TextStyle(fontFamily: 'Nunito',color: colorText,fontSize: size,fontWeight: FontWeight.bold)
+            style: TextStyle(fontFamily: 'Nunito',color: colorText,fontSize: sizeText,fontWeight: FontWeight.bold)
         )
     );
   }

@@ -18,10 +18,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
 
     currentIndex = widget.index;
+    final width = MediaQuery.of(context).size.width;
 
-    print(currentIndex);
-
-    return Scaffold(
+    return width> 600?Scaffold(
       backgroundColor: PaletteColor.primaryColor,
       body: Flex(
         direction: Axis.horizontal,
@@ -40,6 +39,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
           )
         ],
       ),
-    );
+    ):Image.asset("assets/image/logo_light.png",width: 50,fit: BoxFit.fitWidth,);
   }
 }

@@ -9,8 +9,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  final _controllerEmail = TextEditingController();
-  final _controllerPassword = TextEditingController();
+  final _controllerEmail = TextEditingController(text: 're@gmail.com');
+  final _controllerPassword = TextEditingController(text: 'euridice');
   bool visibiblePassword = false;
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
             email: _controllerEmail.text.trim(),
             password: _controllerPassword.text.trim()
         ).then((auth)async{
-          Navigator.pushReplacementNamed(context, "/home");
+          Navigator.pushReplacementNamed(context, "/navigation");
         });
       }on FirebaseAuthException catch (e) {
         if(e.code =="unknown"){
@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     heightCustom: 0.07,
                     onPressed:()=>_signFirebase(),
                     text: "Entrar",
-                    size: 14,
+                    sizeText: 14,
                     colorButton: PaletteColor.primaryColor,
                     colorText: PaletteColor.white,
                     colorBorder:PaletteColor.primaryColor,

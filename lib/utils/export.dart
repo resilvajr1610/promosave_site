@@ -13,6 +13,7 @@ export '../widgets/inputPassword.dart';
 export '../widgets/buttom_custom.dart';
 export '../widgets/menu.dart';
 export '../widgets/title_menu.dart';
+export '../widgets/title_home.dart';
 
 export '../screens/login_screen.dart';
 export '../screens/home_screen.dart';
