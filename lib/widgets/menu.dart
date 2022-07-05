@@ -56,6 +56,15 @@ class Menu extends StatelessWidget {
             icon: Icons.help,
             select:  this.index==5?true:false,
           ),
+          Spacer(),
+          Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.all(24.0),
+            child: IconButton(
+              onPressed: ()=>FirebaseAuth.instance.signOut().then((value) =>Navigator.pushReplacementNamed(context, '/login')),
+              icon: Icon(Icons.logout,color: Colors.white,size: 40,)
+            ),
+          )
         ],
       )
     );
