@@ -14,6 +14,7 @@ export '../widgets/buttom_custom.dart';
 export '../widgets/menu.dart';
 export '../widgets/title_menu.dart';
 export '../widgets/title_home.dart';
+export '../widgets/container_question.dart';
 
 export '../screens/login_screen.dart';
 export '../screens/home_screen.dart';
@@ -23,6 +24,8 @@ export '../screens/finances_screen.dart';
 export '../screens/delivery_screen.dart';
 export '../screens/questions_screen.dart';
 export '../screens/navigation_screen.dart';
+
+export '../models/question_model.dart';
 
 export 'dart:convert';
 export 'package:firebase_auth/firebase_auth.dart';
