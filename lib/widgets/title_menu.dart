@@ -29,7 +29,7 @@ class TitleMenu extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(left: 20,bottom: 15),
         width: width,
-        height: 58,
+        height: height*0.07,
         decoration: BoxDecoration(
           color: select ? PaletteColor.greyLight: PaletteColor.primaryColor,
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),topLeft: Radius.circular(20)),
@@ -41,11 +41,15 @@ class TitleMenu extends StatelessWidget {
             SizedBox(width: 15),
             Icon(icon, color: select ? PaletteColor.primaryColor : PaletteColor.white),
             SizedBox(width: 10),
-            TextCustom(
-              text: text,
-              color: select ? PaletteColor.primaryColor : PaletteColor.white,
-              textAlign: TextAlign.start,
-              fontWeight: select ? FontWeight.bold : FontWeight.normal,
+            Container(
+              width: width*0.08,
+              child: TextCustom(
+                size: 14.0,
+                text: text,
+                color: select ? PaletteColor.primaryColor : PaletteColor.white,
+                textAlign: TextAlign.start,
+                fontWeight: select ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
           ],
         ),

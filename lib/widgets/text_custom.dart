@@ -14,13 +14,14 @@ class TextCustom extends StatelessWidget {
     this.color = PaletteColor.primaryColor,
     this.fontWeight = FontWeight.normal,
     this.textAlign = TextAlign.start,
-    this.maxLines = 2
+    this.maxLines = 1
   });
 
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
       text,
+      overflow: TextOverflow.ellipsis,
       textAlign: textAlign,
       style: TextStyle(
         fontFamily: 'Nunito',
@@ -28,7 +29,7 @@ class TextCustom extends StatelessWidget {
         fontSize: size,
         fontWeight: fontWeight,
       ),
-      minFontSize: 10,
+      minFontSize: size,
       maxLines: maxLines,
     );
   }

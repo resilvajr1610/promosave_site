@@ -24,8 +24,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           borderRadius: BorderRadius.circular(15),
           color: PaletteColor.greyLight,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 64.0, left: 64, bottom: 16),
@@ -40,14 +39,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 64),
+              padding: EdgeInsets.symmetric(horizontal:width*0.05),
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  margin: EdgeInsets.symmetric(horizontal:  width*0.05,),
+                  padding: EdgeInsets.symmetric( vertical: 12),
                   width: width * 0.7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +55,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: width * 0.08,
+                            width: width * 0.13,
                             child: RadioListTile(
                               title: Text('Empresa'),
                               value: 1,
@@ -69,7 +69,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             ),
                           ),
                           Container(
-                            width: width * 0.1,
+                            width: width * 0.15,
                             child: RadioListTile(
                               title: Text('Entregador'),
                               value: 2,
@@ -83,7 +83,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             ),
                           ),
                           Container(
-                            width: width * 0.08,
+                            width: width * 0.15,
                             child: RadioListTile(
                               title: Text('Cliente'),
                               value: 3,
@@ -155,14 +155,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 64),
+              padding: EdgeInsets.symmetric(horizontal:width*0.05),
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  margin: EdgeInsets.symmetric(horizontal:  width*0.05,),
+                  padding: EdgeInsets.symmetric( vertical: 12),
                   width: width * 0.7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +171,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: width * 0.08,
+                            width: width * 0.13,
                             child: RadioListTile(
                               title: Text('Empresa'),
                               value: 4,
@@ -184,7 +185,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             ),
                           ),
                           Container(
-                            width: width * 0.1,
+                            width: width * 0.15,
                             child: RadioListTile(
                               title: Text('Entregador'),
                               value: 5,
@@ -198,7 +199,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             ),
                           ),
                           Container(
-                            width: width * 0.08,
+                            width: width * 0.15,
                             child: RadioListTile(
                               title: Text('Cliente'),
                               value: 6,
@@ -248,6 +249,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 ),
               ),
             ),
+            SizedBox(height: 20),
           ],
         ));
   }
