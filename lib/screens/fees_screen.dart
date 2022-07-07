@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../utils/export.dart';
 
 class FeesScreen extends StatefulWidget {
@@ -13,11 +11,38 @@ class _FeesScreenState extends State<FeesScreen> {
   var _controllerKm = TextEditingController();
   var _controllerFeesDelivery = TextEditingController();
   var _controllerFeesProduct = TextEditingController();
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+
+  _data()async{
+    DocumentSnapshot snapshot = await db.collection("fees").doc('fees').get();
+    Map<String,dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+
+    setState(() {
+      _controllerKm = TextEditingController(text: data?['feesKm']);
+      _controllerFeesDelivery = TextEditingController(text: data?['feesDelivery']);
+      _controllerFeesProduct = TextEditingController(text: data?['feesProduct']);
+    });
+  }
+
+  _saveFirebase()async{
+
+    db.collection('fees').doc('fees').set({
+      'feesKm'        : _controllerKm.text,
+      'feesDelivery'  : _controllerFeesDelivery.text,
+      'feesProduct'   : _controllerFeesProduct.text,
+    }).then((value) => AlertModel().alert('Sucesso', 'As taxas foram salvas com sucesso!', PaletteColor.green, PaletteColor.green, context));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _data();
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
     return Container(
         decoration: BoxDecoration(
@@ -106,7 +131,13 @@ class _FeesScreenState extends State<FeesScreen> {
                   ),
                   SizedBox(height: 40),
                   ButtonCustom(
-                      onPressed: (){},
+                      onPressed: (){
+                        if(_controllerKm.text.isNotEmpty && _controllerFeesProduct.text.isNotEmpty && _controllerFeesDelivery.text.isNotEmpty){
+                          _saveFirebase();
+                        }else{
+                          AlertModel().alert('Erro !', 'Preencha todos os campos para salvar', PaletteColor.red, PaletteColor.red, context);
+                        }
+                      },
                       text: 'Salvar',
                       sizeText: 14.0,
                       colorButton: PaletteColor.primaryColor,

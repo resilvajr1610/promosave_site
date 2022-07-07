@@ -38,50 +38,21 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
        'date' : DateTime.now()
      }).then((value){
        setState(() {
-         _alert('Sucesso!', 'Sua pergunta foi salva!',PaletteColor.green,PaletteColor.green);
+         AlertModel().alert('Sucesso!', 'Sua pergunta foi salva!',PaletteColor.green,PaletteColor.green,context);
          _controllerQuestion.clear();
          _controllerAnswer.clear();
        });
      });
   }
-
-  _alert(String title, String content,final colorTextTitle, final colorTextContent){
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-
-          return ShowDialog(
-              title: title,
-              content: content,
-              colorTextContent: colorTextContent,
-              colorTextTitle: colorTextTitle,
-              listActions: [
-                ButtonCustom(
-                  onPressed: ()=>Navigator.pop(context),
-                  text: 'OK',
-                  widthCustom: 0.1,
-                  heightCustom: 0.05,
-                  colorBorder: PaletteColor.primaryColor,
-                  colorButton: PaletteColor.primaryColor,
-                  colorText: PaletteColor.white,
-                  sizeText: 14.0,
-                ),
-              ]
-          );
-        });
-  }
-
   _deleteQuestion(String id){
 
     db.collection('questions').doc(id).delete().then((value){
-      _alert('Sucesso', 'Questão excluída com sucesso!', PaletteColor.green, PaletteColor.green);
+      AlertModel().alert('Sucesso', 'Questão excluída com sucesso!', PaletteColor.green, PaletteColor.green,context);
       setState(() {
         list=[];
         _allResults=[];
       });
     });
-
   }
 
   @override
@@ -211,11 +182,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                     _saveQuestion('client');
                                     break;
                                   default:
-                                    _alert('Erro !','Selecione uma das opções acima "Cadastrar nova pergunta"',PaletteColor.red,PaletteColor.red);
+                                    AlertModel().alert('Erro !','Selecione uma das opções acima "Cadastrar nova pergunta"',PaletteColor.red,PaletteColor.red,context);
                                     break;
                                 }
                               }else{
-                                _alert('Erro !','Preencha os campos Pergunta e Resposta para salvar.',PaletteColor.red,PaletteColor.red);
+                                AlertModel().alert('Erro !','Preencha os campos Pergunta e Resposta para salvar.',PaletteColor.red,PaletteColor.red,context);
                               }
                           },
                           text: 'Salvar',

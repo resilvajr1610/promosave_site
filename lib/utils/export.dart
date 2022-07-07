@@ -7,6 +7,7 @@ export 'colors.dart';
 export 'routes.dart';
 export 'text_const.dart';
 
+export '../models/alert_model.dart';
 export '../models/question_model.dart';
 
 export '../widgets/menu.dart';
