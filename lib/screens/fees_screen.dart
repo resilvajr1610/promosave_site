@@ -13,7 +13,6 @@ class _FeesScreenState extends State<FeesScreen> {
   var _controllerFeesProduct = TextEditingController();
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-
   _data()async{
     DocumentSnapshot snapshot = await db.collection("fees").doc('fees').get();
     Map<String,dynamic>? data = snapshot.data() as Map<String, dynamic>?;

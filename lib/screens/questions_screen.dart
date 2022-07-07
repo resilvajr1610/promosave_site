@@ -47,7 +47,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   _deleteQuestion(String id){
 
     db.collection('questions').doc(id).delete().then((value){
-      AlertModel().alert('Sucesso', 'Questão excluída com sucesso!', PaletteColor.green, PaletteColor.green,context);
+      AlertModel().alert('Sucesso', 'Pergunta excluída com sucesso!', PaletteColor.green, PaletteColor.green,context);
       setState(() {
         list=[];
         _allResults=[];
