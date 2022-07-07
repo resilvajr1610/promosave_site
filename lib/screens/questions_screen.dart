@@ -8,11 +8,81 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
+  FirebaseFirestore db = FirebaseFirestore.instance;
   var _controllerQuestion = TextEditingController();
   var _controllerAnswer = TextEditingController();
-  var select = 1;
-  var showAswer = false;
   List<QuestionModel> list=[];
+  List _allResults = [];
+  var showAswer = false;
+  var select = 1;
+
+  data(String type)async{
+    var data = await db.collection("questions").where('type', isEqualTo: type).get();
+
+    setState(() {
+      _allResults = data.docs;
+    });
+  }
+
+  _saveQuestion(String type)async{
+
+    DocumentReference ref  = db.collection("questions").doc();
+
+    String id = ref.id;
+
+     db.collection('questions').doc(id).set({
+       'id':id,
+       'type':type,
+       'question' : _controllerQuestion.text,
+       'answer' : _controllerAnswer.text,
+       'date' : DateTime.now()
+     }).then((value){
+       setState(() {
+         _alert('Sucesso!', 'Sua pergunta foi salva!',PaletteColor.green,PaletteColor.green);
+         _controllerQuestion.clear();
+         _controllerAnswer.clear();
+       });
+     });
+  }
+
+  _alert(String title, String content,final colorTextTitle, final colorTextContent){
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+
+          return ShowDialog(
+              title: title,
+              content: content,
+              colorTextContent: colorTextContent,
+              colorTextTitle: colorTextTitle,
+              listActions: [
+                ButtonCustom(
+                  onPressed: ()=>Navigator.pop(context),
+                  text: 'OK',
+                  widthCustom: 0.1,
+                  heightCustom: 0.05,
+                  colorBorder: PaletteColor.primaryColor,
+                  colorButton: PaletteColor.primaryColor,
+                  colorText: PaletteColor.white,
+                  sizeText: 14.0,
+                ),
+              ]
+          );
+        });
+  }
+
+  _deleteQuestion(String id){
+
+    db.collection('questions').doc(id).delete().then((value){
+      _alert('Sucesso', 'Questão excluída com sucesso!', PaletteColor.green, PaletteColor.green);
+      setState(() {
+        list=[];
+        _allResults=[];
+      });
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +198,26 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       ),
                       SizedBox(height: 50),
                       ButtonCustom(
-                          onPressed: () {},
+                          onPressed: () {
+                              if(_controllerQuestion.text.isNotEmpty && _controllerAnswer.text.isNotEmpty){
+                                switch (select){
+                                  case 1:
+                                    _saveQuestion('enterprise');
+                                    break;
+                                  case 2:
+                                    _saveQuestion('delivery');
+                                    break;
+                                  case 3:
+                                    _saveQuestion('client');
+                                    break;
+                                  default:
+                                    _alert('Erro !','Selecione uma das opções acima "Cadastrar nova pergunta"',PaletteColor.red,PaletteColor.red);
+                                    break;
+                                }
+                              }else{
+                                _alert('Erro !','Preencha os campos Pergunta e Resposta para salvar.',PaletteColor.red,PaletteColor.red);
+                              }
+                          },
                           text: 'Salvar',
                           sizeText: 14.0,
                           colorButton: PaletteColor.primaryColor,
@@ -180,6 +269,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               onChanged: (val) {
                                 setState(() {
                                   select = val as int;
+                                  _allResults=[];
+                                  list=[];
+                                  data('enterprise');
                                 });
                               },
                             ),
@@ -194,6 +286,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               onChanged: (val) {
                                 setState(() {
                                   select = val as int;
+                                  _allResults=[];
+                                  list=[];
+                                  data('delivery');
                                 });
                               },
                             ),
@@ -208,6 +303,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               onChanged: (val) {
                                 setState(() {
                                   select = val as int;
+                                  _allResults=[];
+                                  list=[];
+                                  data('client');
                                 });
                               },
                             ),
@@ -218,28 +316,39 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       Container(
                         height: height*0.25,
                         child: ListView.builder(
-                          itemCount: 10,
+                          itemCount: _allResults.length,
                           itemBuilder:(context,index){
 
-                            list.add(
-                                QuestionModel(
-                                  answer: 'Resposta ${index+1}.',
-                                  question: 'Pergunta ${index+1}?',
-                                  showQuestion: false
-                                )
-                            );
+                            DocumentSnapshot item = _allResults[index];
 
-                            return ContainerQuestion(
-                                question: list[index].question,
-                                answer: list[index].answer,
-                                onPressedShow: (){
-                                  setState(() {
-                                    list[index].showQuestion?list[index].showQuestion=false:list[index].showQuestion=true;
-                                  });
-                                },
-                                onPressedDelete: (){},
-                                showQuestion: list[index].showQuestion
-                            );
+                            if(_allResults.length == 0){
+                              return Center(
+                                  child: Text('Nenhuma pergunta encontrada dessa categoria',
+                                    style: TextStyle(fontSize: 16,color: PaletteColor.primaryColor),)
+                              );
+                            }else{
+                              list.add(
+                                  QuestionModel(
+                                      answer: item['answer'],
+                                      question: item['question'],
+                                      showQuestion: false
+                                  )
+                              );
+
+                              return ContainerQuestion(
+                                  question: list[index].question,
+                                  answer: list[index].answer,
+                                  onPressedShow: (){
+                                    setState(() {
+                                      list[index].showQuestion?list[index].showQuestion=false:list[index].showQuestion=true;
+                                    });
+                                  },
+                                  onPressedDelete: (){
+                                    _deleteQuestion( item['id']);
+                                  },
+                                  showQuestion: list[index].showQuestion
+                              );
+                            }
                           }
                         ),
                       ),

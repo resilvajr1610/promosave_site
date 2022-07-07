@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          SizedBox(height: height*0.1),
           SizedBox(
             height: height*0.25,
             width: width*0.15,
