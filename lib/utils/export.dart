@@ -9,6 +9,7 @@ export 'text_const.dart';
 
 export '../models/alert_model.dart';
 export '../models/question_model.dart';
+export '../models/error_list_model.dart';
 
 export '../widgets/menu.dart';
 export '../widgets/input.dart';

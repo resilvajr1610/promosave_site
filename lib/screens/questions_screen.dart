@@ -38,7 +38,19 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
        'date' : DateTime.now()
      }).then((value){
        setState(() {
-         AlertModel().alert('Sucesso!', 'Sua pergunta foi salva!',PaletteColor.green,PaletteColor.green,context);
+         AlertModel().alert('Sucesso!', 'Sua pergunta foi salva!',PaletteColor.green,PaletteColor.green,context,
+         [
+           ButtonCustom(
+             onPressed: ()=>Navigator.pop(context),
+             text: 'OK',
+             widthCustom: 0.1,
+             heightCustom: 0.05,
+             colorBorder: PaletteColor.primaryColor,
+             colorButton: PaletteColor.primaryColor,
+             colorText: PaletteColor.white,
+             sizeText: 14.0,
+           ),
+         ]);
          _controllerQuestion.clear();
          _controllerAnswer.clear();
        });
@@ -47,7 +59,19 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   _deleteQuestion(String id){
 
     db.collection('questions').doc(id).delete().then((value){
-      AlertModel().alert('Sucesso', 'Pergunta excluída com sucesso!', PaletteColor.green, PaletteColor.green,context);
+      AlertModel().alert('Sucesso', 'Pergunta excluída com sucesso!', PaletteColor.green, PaletteColor.green,context,
+      [
+        ButtonCustom(
+          onPressed: ()=>Navigator.pop(context),
+          text: 'OK',
+          widthCustom: 0.1,
+          heightCustom: 0.05,
+          colorBorder: PaletteColor.primaryColor,
+          colorButton: PaletteColor.primaryColor,
+          colorText: PaletteColor.white,
+          sizeText: 14.0,
+        ),
+      ]);
       setState(() {
         list=[];
         _allResults=[];
@@ -182,11 +206,35 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                     _saveQuestion('client');
                                     break;
                                   default:
-                                    AlertModel().alert('Erro !','Selecione uma das opções acima "Cadastrar nova pergunta"',PaletteColor.red,PaletteColor.red,context);
+                                    AlertModel().alert('Erro !','Selecione uma das opções acima "Cadastrar nova pergunta"',PaletteColor.red,PaletteColor.red,context,
+                                    [
+                                      ButtonCustom(
+                                        onPressed: ()=>Navigator.pop(context),
+                                        text: 'OK',
+                                        widthCustom: 0.1,
+                                        heightCustom: 0.05,
+                                        colorBorder: PaletteColor.primaryColor,
+                                        colorButton: PaletteColor.primaryColor,
+                                        colorText: PaletteColor.white,
+                                        sizeText: 14.0,
+                                      ),
+                                    ]);
                                     break;
                                 }
                               }else{
-                                AlertModel().alert('Erro !','Preencha os campos Pergunta e Resposta para salvar.',PaletteColor.red,PaletteColor.red,context);
+                                AlertModel().alert('Erro !','Preencha os campos Pergunta e Resposta para salvar.',PaletteColor.red,PaletteColor.red,context,
+                                [
+                                  ButtonCustom(
+                                    onPressed: ()=>Navigator.pop(context),
+                                    text: 'OK',
+                                    widthCustom: 0.1,
+                                    heightCustom: 0.05,
+                                    colorBorder: PaletteColor.primaryColor,
+                                    colorButton: PaletteColor.primaryColor,
+                                    colorText: PaletteColor.white,
+                                    sizeText: 14.0,
+                                  ),
+                                ]);
                               }
                           },
                           text: 'Salvar',

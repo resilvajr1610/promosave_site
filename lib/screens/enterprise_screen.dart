@@ -12,6 +12,41 @@ class EnterpriseScreen extends StatefulWidget {
 class _EnterpriseScreenState extends State<EnterpriseScreen> {
 
   final listMount = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  var _allResultsWaiting = [];
+  var _allResultsApproved = [];
+  String urlPhotoProfileFire='';
+  String nameFire = '';
+  String cnpjFire = '';
+  String emailFire = '';
+  String phoneFire = '';
+  String addressFire = '';
+  String typeFire = '';
+  String cityFire = '';
+  String idUserFire = '';
+  String statusFire = '';
+
+  dataWaiting()async{
+    var data = await db.collection("enterprise").where('type', isEqualTo: TextConst.ENTERPRISE).where('status',isEqualTo: TextConst.WAITING).get();
+
+    setState(() {
+      _allResultsWaiting = data.docs;
+    });
+  }
+  dataApproved()async{
+    var data = await db.collection("enterprise").where('type', isEqualTo: TextConst.ENTERPRISE).where('status',isEqualTo: TextConst.APPROVED).get();
+
+    setState(() {
+      _allResultsApproved = data.docs;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dataWaiting();
+    dataApproved();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,28 +109,65 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                           SizedBox(height: 10),
                           Container(
                             height: height * 0.2,
-                            child: ListView.separated(
+                            child: _allResultsWaiting.length == 0
+                                ?Center(
+                                  child: TextCustom(
+                                    text: 'Nenhuma empresa aguardando ser aprovada ; )',
+                                    color: PaletteColor.grey,
+                                  )
+                                )
+                                : ListView.separated(
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
                                         SizedBox(height: 5),
-                                itemCount: 3,
+                                itemCount: _allResultsWaiting.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ListTile(
-                                    onTap: () {},
-                                    leading: CircleAvatar(
-                                      radius: 40,
-                                    ),
-                                    trailing: TextCustom(
-                                      text: '25/05/2022',
-                                      size: 14.0,
-                                      color: PaletteColor.grey,
-                                    ),
-                                    title: TextCustom(
-                                      text: 'Nome da Empresa',
-                                      size: 14.0,
-                                      color: PaletteColor.grey,
-                                    ),
-                                  );
+
+                                  DocumentSnapshot item = _allResultsWaiting[index];
+                                  String urlPhotoProfile = ErrorListModel(item,'urlPhotoProfile');
+                                  String name = ErrorListModel(item,'name');
+                                  String cnpj = ErrorListModel(item,'cpf');
+                                  String email = ErrorListModel(item,'email');
+                                  String phone = ErrorListModel(item,'phone');
+                                  String address = ErrorListModel(item,'address');
+                                  String type = ErrorListModel(item,'type');
+                                  String city = ErrorListModel(item,'city');
+                                  String idUser = ErrorListModel(item,'idUser');
+                                  String status = ErrorListModel(item,'status');
+
+                                    return ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          nameFire = name;
+                                          cnpjFire = cnpj;
+                                          emailFire = email;
+                                          phoneFire = phone;
+                                          addressFire = address;
+                                          typeFire = type;
+                                          cityFire = city;
+                                          urlPhotoProfileFire = urlPhotoProfile;
+                                          idUserFire = idUser;
+                                          statusFire = status;
+                                        });
+                                      },
+                                      leading: CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor: PaletteColor.grey,
+                                        backgroundImage: NetworkImage(
+                                          urlPhotoProfile!=""?urlPhotoProfile:TextConst.LOGO,
+                                        ),
+                                      ),
+                                      trailing: TextCustom(
+                                        text: '25/05/2022',
+                                        size: 14.0,
+                                        color: PaletteColor.grey,
+                                      ),
+                                      title: TextCustom(
+                                        text: name,
+                                        size: 14.0,
+                                        color: PaletteColor.grey,
+                                      ),
+                                    );
                                 }),
                           ),
                         ],
@@ -142,15 +214,45 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
                                         SizedBox(height: 5),
-                                itemCount: 10,
+                                itemCount: _allResultsApproved.length,
                                 itemBuilder: (BuildContext context, int index) {
+
+                                  DocumentSnapshot item = _allResultsApproved[index];
+                                  String urlPhotoProfile = ErrorListModel(item,'urlPhotoProfile');
+                                  String name = ErrorListModel(item,'name');
+                                  String cnpj = ErrorListModel(item,'cpf');
+                                  String email = ErrorListModel(item,'email');
+                                  String phone = ErrorListModel(item,'phone');
+                                  String address = ErrorListModel(item,'address');
+                                  String type = ErrorListModel(item,'type');
+                                  String city = ErrorListModel(item,'city');
+                                  String idUser = ErrorListModel(item,'idUser');
+                                  String status = ErrorListModel(item,'status');
+
                                   return ListTile(
-                                    onTap: () {},
+                                    onTap: () {
+                                      setState(() {
+                                        nameFire = name;
+                                        cnpjFire = cnpj;
+                                        emailFire = email;
+                                        phoneFire = phone;
+                                        addressFire = address;
+                                        typeFire = type;
+                                        cityFire = city;
+                                        urlPhotoProfileFire = urlPhotoProfile;
+                                        idUserFire = idUser;
+                                        statusFire = status;
+                                      });
+                                    },
                                     leading: CircleAvatar(
                                       radius: 40,
+                                      backgroundColor: PaletteColor.grey,
+                                      backgroundImage: NetworkImage(
+                                        urlPhotoProfile!=""?urlPhotoProfile:TextConst.LOGO,
+                                      ),
                                     ),
                                     title: TextCustom(
-                                      text: 'Nome da Empresa',
+                                      text: item['name'],
                                       size: 14.0,
                                       color: PaletteColor.grey,
                                     ),
@@ -182,6 +284,10 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                             padding: EdgeInsets.all(width*0.02),
                             child: CircleAvatar(
                               radius: width*0.05,
+                              backgroundColor: PaletteColor.primaryColor,
+                              backgroundImage: NetworkImage(
+                                urlPhotoProfileFire!=""?urlPhotoProfileFire:TextConst.LOGO,
+                              ),
                             ),
                           ),
                           Column(
@@ -194,7 +300,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                   width: width * 0.2,
                                   padding: EdgeInsets.only(bottom: 12),
                                   child: TextCustom(
-                                    text: 'Nome da Empresa',
+                                    text: nameFire,
                                     size: 16.0,
                                     color: PaletteColor.grey,
                                     fontWeight: FontWeight.bold,
@@ -206,7 +312,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 width: width * 0.17,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: 'CNPJ 000.000.000/0000-00',
+                                  text: cnpjFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -216,7 +322,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 width: width * 0.2,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: 'empresa@gmail.com',
+                                  text: emailFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -226,7 +332,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 width: width * 0.2,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: '(11) 2122-2222',
+                                  text: phoneFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -236,7 +342,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 margin: EdgeInsets.symmetric(horizontal: 5),
                                 width: width * 0.17,
                                 child: TextCustom(
-                                  text:'Rua Aparecida Godoi, 111, Vila Mariana',
+                                  text:addressFire,
                                   maxLines: 2,
                                   size: 14.0,
                                   color: PaletteColor.grey,
@@ -247,7 +353,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 width: width * 0.17,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text:'São Paulo/SP',
+                                  text:cityFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -257,11 +363,37 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                           ),
                         ],
                       ),
-                      Row(
+                      statusFire!= TextConst.WAITING?Container(): Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ButtonCustom(
-                              onPressed: (){},
+                              onPressed: ()=>AlertModel().alert('Aviso !', 'Você deseja realmente recusar essa empresa?', PaletteColor.grey, PaletteColor.grey, context,
+                              [
+                                ButtonCustom(
+                                  onPressed: ()=>Navigator.pop(context),
+                                  text: 'Não',
+                                  widthCustom: 0.1,
+                                  heightCustom: 0.05,
+                                  colorBorder: PaletteColor.red,
+                                  colorButton: PaletteColor.red,
+                                  colorText: PaletteColor.white,
+                                  sizeText: 14.0,
+                                ),
+                                ButtonCustom(
+                                  onPressed: (){
+                                    db.collection('enterprise').doc(idUserFire).update({
+                                      'status' : TextConst.REFUSED
+                                    }).then((value) => Navigator.pushReplacementNamed(context, '/navigation'));
+                                  },
+                                  text: 'Sim',
+                                  widthCustom: 0.1,
+                                  heightCustom: 0.05,
+                                  colorBorder: PaletteColor.green,
+                                  colorButton: PaletteColor.green,
+                                  colorText: PaletteColor.white,
+                                  sizeText: 14.0,
+                                ),
+                              ]),
                               text: 'Recusar empresa',
                               sizeText: 14.0,
                               colorButton: PaletteColor.red,
@@ -271,7 +403,33 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                               heightCustom: 0.05
                           ),
                           ButtonCustom(
-                              onPressed: (){},
+                              onPressed: ()=>AlertModel().alert('Aviso !', 'Você deseja realmente aceitar essa empresa?', PaletteColor.grey, PaletteColor.grey, context,
+                                  [
+                                    ButtonCustom(
+                                      onPressed: ()=>Navigator.pop(context),
+                                      text: 'Não',
+                                      widthCustom: 0.1,
+                                      heightCustom: 0.05,
+                                      colorBorder: PaletteColor.red,
+                                      colorButton: PaletteColor.red,
+                                      colorText: PaletteColor.white,
+                                      sizeText: 14.0,
+                                    ),
+                                    ButtonCustom(
+                                      onPressed: (){
+                                        db.collection('enterprise').doc(idUserFire).update({
+                                          'status' : TextConst.APPROVED
+                                        }).then((value) => Navigator.pushReplacementNamed(context, '/navigation'));
+                                      },
+                                      text: 'Sim',
+                                      widthCustom: 0.1,
+                                      heightCustom: 0.05,
+                                      colorBorder: PaletteColor.green,
+                                      colorButton: PaletteColor.green,
+                                      colorText: PaletteColor.white,
+                                      sizeText: 14.0,
+                                    ),
+                                  ]),
                               text: 'Aprovar empresa',
                               sizeText: 14.0,
                               colorButton: PaletteColor.green,

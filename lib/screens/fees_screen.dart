@@ -30,7 +30,19 @@ class _FeesScreenState extends State<FeesScreen> {
       'feesKm'        : _controllerKm.text,
       'feesDelivery'  : _controllerFeesDelivery.text,
       'feesProduct'   : _controllerFeesProduct.text,
-    }).then((value) => AlertModel().alert('Sucesso', 'As taxas foram salvas com sucesso!', PaletteColor.green, PaletteColor.green, context));
+    }).then((value) => AlertModel().alert('Sucesso', 'As taxas foram salvas com sucesso!', PaletteColor.green, PaletteColor.green, context,
+    [
+      ButtonCustom(
+        onPressed: ()=>Navigator.pop(context),
+        text: 'OK',
+        widthCustom: 0.1,
+        heightCustom: 0.05,
+        colorBorder: PaletteColor.primaryColor,
+        colorButton: PaletteColor.primaryColor,
+        colorText: PaletteColor.white,
+        sizeText: 14.0,
+      ),
+    ]));
   }
 
   @override
@@ -134,7 +146,19 @@ class _FeesScreenState extends State<FeesScreen> {
                         if(_controllerKm.text.isNotEmpty && _controllerFeesProduct.text.isNotEmpty && _controllerFeesDelivery.text.isNotEmpty){
                           _saveFirebase();
                         }else{
-                          AlertModel().alert('Erro !', 'Preencha todos os campos para salvar', PaletteColor.red, PaletteColor.red, context);
+                          AlertModel().alert('Erro !', 'Preencha todos os campos para salvar', PaletteColor.red, PaletteColor.red, context,
+                          [
+                            ButtonCustom(
+                              onPressed: ()=>Navigator.pop(context),
+                              text: 'OK',
+                              widthCustom: 0.1,
+                              heightCustom: 0.05,
+                              colorBorder: PaletteColor.primaryColor,
+                              colorButton: PaletteColor.primaryColor,
+                              colorText: PaletteColor.white,
+                              sizeText: 14.0,
+                            ),
+                          ]);
                         }
                       },
                       text: 'Salvar',
