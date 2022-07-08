@@ -312,7 +312,7 @@ class _EnterpriseScreenState extends State<EnterpriseScreen> {
                                 width: width * 0.17,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: cnpjFire,
+                                  text: cnpjFire!=''?'CNPJ $cnpjFire':'',
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,

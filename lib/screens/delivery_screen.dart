@@ -9,6 +9,42 @@ class DeliveryScreen extends StatefulWidget {
 
 class _DeliveryScreenState extends State<DeliveryScreen> {
   final listMount = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  var _allResultsWaiting = [];
+  var _allResultsApproved = [];
+  String urlPhotoProfileFire='';
+  String urlPhotoCnhFire='';
+  String nameFire = '';
+  String cnpjFire = '';
+  String emailFire = '';
+  String phoneFire = '';
+  String addressFire = '';
+  String typeFire = '';
+  String cityFire = '';
+  String idUserFire = '';
+  String statusFire = '';
+
+  dataWaiting()async{
+    var data = await db.collection("enterprise").where('type', isEqualTo: TextConst.DELIVERYMAN).where('status',isEqualTo: TextConst.WAITING).get();
+
+    setState(() {
+      _allResultsWaiting = data.docs;
+    });
+  }
+  dataApproved()async{
+    var data = await db.collection("enterprise").where('type', isEqualTo: TextConst.DELIVERYMAN).where('status',isEqualTo: TextConst.APPROVED).get();
+
+    setState(() {
+      _allResultsApproved = data.docs;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dataWaiting();
+    dataApproved();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,16 +107,55 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                           SizedBox(height: 10),
                           Container(
                             height: height * 0.2,
-                            child: ListView.separated(
+                            child: _allResultsWaiting.length == 0
+                                ?Center(
+                                  child: TextCustom(
+                                    text: 'Nenhum entregador aguardando ser aprovado ; )',
+                                    color: PaletteColor.grey,
+                                  )
+                                )
+                                : ListView.separated(
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
                                     SizedBox(height: 5),
-                                itemCount: 3,
+                                itemCount: _allResultsWaiting.length,
                                 itemBuilder: (BuildContext context, int index) {
+
+                                  DocumentSnapshot item = _allResultsWaiting[index];
+                                  String urlPhotoProfile = ErrorListModel(item,'urlPhotoProfile');
+                                  String urlPhotoCnh = ErrorListModel(item,'urlPhotoCnh');
+                                  String name = ErrorListModel(item,'name');
+                                  String cnpj = ErrorListModel(item,'cpf');
+                                  String email = ErrorListModel(item,'email');
+                                  String phone = ErrorListModel(item,'phone');
+                                  String address = ErrorListModel(item,'address');
+                                  String type = ErrorListModel(item,'type');
+                                  String city = ErrorListModel(item,'city');
+                                  String idUser = ErrorListModel(item,'idUser');
+                                  String status = ErrorListModel(item,'status');
+
                                   return ListTile(
-                                    onTap: () {},
+                                    onTap: () {
+                                      setState(() {
+                                        nameFire = name;
+                                        cnpjFire = cnpj;
+                                        emailFire = email;
+                                        phoneFire = phone;
+                                        addressFire = address;
+                                        typeFire = type;
+                                        cityFire = city;
+                                        urlPhotoProfileFire = urlPhotoProfile;
+                                        urlPhotoCnhFire = urlPhotoCnh;
+                                        idUserFire = idUser;
+                                        statusFire = status;
+                                      });
+                                    },
                                     leading: CircleAvatar(
                                       radius: 40,
+                                      backgroundColor: PaletteColor.grey,
+                                      backgroundImage: NetworkImage(
+                                        urlPhotoProfile!=""?urlPhotoProfile:TextConst.LOGO,
+                                      ),
                                     ),
                                     trailing: TextCustom(
                                       text: '25/05/2022',
@@ -88,7 +163,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                       color: PaletteColor.grey,
                                     ),
                                     title: TextCustom(
-                                      text: 'Nome ${index+1}',
+                                      text: name,
                                       size: 14.0,
                                       color: PaletteColor.grey,
                                     ),
@@ -139,15 +214,47 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
                                     SizedBox(height: 5),
-                                itemCount: 10,
+                                itemCount: _allResultsApproved.length,
                                 itemBuilder: (BuildContext context, int index) {
+
+                                  DocumentSnapshot item = _allResultsApproved[index];
+                                  String urlPhotoProfile = ErrorListModel(item,'urlPhotoProfile');
+                                  String urlPhotoCnh = ErrorListModel(item,'urlPhotoCnh');
+                                  String name = ErrorListModel(item,'name');
+                                  String cnpj = ErrorListModel(item,'cpf');
+                                  String email = ErrorListModel(item,'email');
+                                  String phone = ErrorListModel(item,'phone');
+                                  String address = ErrorListModel(item,'address');
+                                  String type = ErrorListModel(item,'type');
+                                  String city = ErrorListModel(item,'city');
+                                  String idUser = ErrorListModel(item,'idUser');
+                                  String status = ErrorListModel(item,'status');
+
                                   return ListTile(
-                                    onTap: () {},
+                                    onTap: () {
+                                      setState(() {
+                                        nameFire = name;
+                                        cnpjFire = cnpj;
+                                        emailFire = email;
+                                        phoneFire = phone;
+                                        addressFire = address;
+                                        typeFire = type;
+                                        cityFire = city;
+                                        urlPhotoProfileFire = urlPhotoProfile;
+                                        urlPhotoCnhFire = urlPhotoCnh;
+                                        idUserFire = idUser;
+                                        statusFire = status;
+                                      });
+                                    },
                                     leading: CircleAvatar(
                                       radius: 40,
+                                      backgroundColor: PaletteColor.grey,
+                                      backgroundImage: NetworkImage(
+                                        urlPhotoProfile!=""?urlPhotoProfile:TextConst.LOGO,
+                                      ),
                                     ),
                                     title: TextCustom(
-                                      text: 'Nome ${index+1}',
+                                      text: item['name'],
                                       size: 14.0,
                                       color: PaletteColor.grey,
                                     ),
@@ -179,6 +286,10 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                             padding: EdgeInsets.all(width*0.02),
                             child: CircleAvatar(
                               radius: width*0.05,
+                              backgroundColor: PaletteColor.primaryColor,
+                              backgroundImage: NetworkImage(
+                                urlPhotoProfileFire!=""?urlPhotoProfileFire:TextConst.LOGO,
+                              ),
                             ),
                           ),
                           Column(
@@ -191,7 +302,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   width: width * 0.2,
                                   padding: EdgeInsets.only(bottom: 12),
                                   child: TextCustom(
-                                    text: 'Nome do Entregador',
+                                    text: nameFire,
                                     size: 16.0,
                                     color: PaletteColor.grey,
                                     fontWeight: FontWeight.bold,
@@ -203,7 +314,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                 width: width * 0.17,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: 'CPF 000.000.000-00',
+                                  text: cnpjFire!=''?'CPF $cnpjFire':'',
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -213,7 +324,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                 width: width * 0.2,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: 'empresa@gmail.com',
+                                  text: emailFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -223,7 +334,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                 width: width * 0.2,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text: '(11) 2122-2222',
+                                  text: phoneFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -233,7 +344,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                 width: width * 0.17,
                                 margin: EdgeInsets.symmetric(horizontal: 5),
                                 child: TextCustom(
-                                  text: 'Rua Aparecida Godoi, 111, Vila Mariana',
+                                  text: addressFire,
                                   maxLines: 2,
                                   size: 14.0,
                                   color: PaletteColor.grey,
@@ -244,7 +355,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                 width: width * 0.17,
                                 padding: EdgeInsets.only(bottom: 12),
                                 child: TextCustom(
-                                  text:'São Paulo/SP',
+                                  text:cityFire,
                                   size: 14.0,
                                   color: PaletteColor.grey,
                                   textAlign: TextAlign.center,
@@ -265,61 +376,75 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   size: 14.0,
                                 ),
                               ),
-                              Container(
-                                margin: EdgeInsets.all(10),
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: PaletteColor.greyInput,
-                                  borderRadius: BorderRadius.circular(10)
+                              InkWell(
+                                onTap: ()=>AlertModel().zoomImage(context, urlPhotoCnhFire,
+                                    [
+                                  ButtonCustom(
+                                    onPressed: ()=>Navigator.pop(context),
+                                    text: 'OK',
+                                    widthCustom: 0.1,
+                                    heightCustom: 0.05,
+                                    colorBorder: PaletteColor.primaryColor,
+                                    colorButton: PaletteColor.primaryColor,
+                                    colorText: PaletteColor.white,
+                                    sizeText: 14.0,
+                                  ),
+                                ]),
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                        urlPhotoCnhFire!=""?urlPhotoCnhFire:TextConst.LOGO,
+                                      ),
+                                    ),
+                                    color: PaletteColor.primaryColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                                child: Icon(Icons.camera_alt,color: PaletteColor.white,size: 50,),
-                              ),
-                              ButtonCustom(
-                                  onPressed: (){},
-                                  text: 'Recusar entregador',
-                                  sizeText: 14.0,
-                                  colorButton: PaletteColor.red,
-                                  colorText: PaletteColor.white,
-                                  colorBorder: PaletteColor.red,
-                                  widthCustom: 0.1,
-                                  heightCustom: 0.05
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                child: TextCustom(
-                                  text: 'Foto do rosto',
-                                  size: 14.0,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.all(10),
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    color: PaletteColor.greyInput,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Icon(Icons.camera_alt,color: PaletteColor.white,size: 50,),
-                              ),
-                              ButtonCustom(
-                                  onPressed: (){},
-                                  text: 'Aprovar entregador',
-                                  sizeText: 14.0,
-                                  colorButton: PaletteColor.green,
-                                  colorText: PaletteColor.white,
-                                  colorBorder: PaletteColor.green,
-                                  widthCustom: 0.1,
-                                  heightCustom: 0.05
                               ),
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(height: 16,),
+                      SizedBox(height: 15),
+                      statusFire!= TextConst.WAITING?Container(): Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ButtonCustom(
+                              onPressed: (){
+                                db.collection('enterprise').doc(idUserFire).update({
+                                  'status' : TextConst.REFUSED
+                                }).then((value) => Navigator.pushReplacementNamed(context, '/navigation'));
+                              },
+                              text: 'Recusar entregador',
+                              sizeText: 14.0,
+                              colorButton: PaletteColor.red,
+                              colorText: PaletteColor.white,
+                              colorBorder: PaletteColor.red,
+                              widthCustom: 0.1,
+                              heightCustom: 0.05
+                          ),
+                          ButtonCustom(
+                              onPressed: (){
+                                db.collection('enterprise').doc(idUserFire).update({
+                                  'status' : TextConst.APPROVED
+                                }).then((value) => Navigator.pushReplacementNamed(context, '/navigation'));
+                              },
+                              text: 'Aprovar entregador',
+                              sizeText: 14.0,
+                              colorButton: PaletteColor.green,
+                              colorText: PaletteColor.white,
+                              colorBorder: PaletteColor.green,
+                              widthCustom: 0.1,
+                              heightCustom: 0.05
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5,),
                       Divider(endIndent: 53,indent: 53,),
                       Container(
                         width: width * 0.2,
