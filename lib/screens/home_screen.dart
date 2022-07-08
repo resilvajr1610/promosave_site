@@ -8,6 +8,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  int enterprises = 0;
+  int deliverys = 0;
+  int clients = 0;
+  int requests = 0;
+  int foods = 0;
+
+  _data()async{
+    QuerySnapshot<Map<String, dynamic>> snapshotClients = await db.collection("user").get();
+    QuerySnapshot<Map<String, dynamic>> snapshotFoods = await db.collection('products').get();
+    QuerySnapshot<Map<String, dynamic>> snapshotDeliverys = await db.collection("enterprise").where('type',isEqualTo: TextConst.DELIVERYMAN).get();
+    QuerySnapshot<Map<String, dynamic>> snapshotEnterprises = await db.collection("enterprise").where('type',isEqualTo: TextConst.ENTERPRISE).get();
+
+    setState(() {
+      clients = snapshotClients.docs.length;
+      deliverys = snapshotDeliverys.docs.length;
+      enterprises = snapshotEnterprises.docs.length;
+      foods = snapshotFoods.docs.length;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _data();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -31,17 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TitleHome(
                 text: 'Empresas\ncadastradas',
-                number: 15,
+                number: enterprises,
               ),
               SizedBox(width: width*0.05),
               TitleHome(
                 text: 'Entregadores\ncadastrados',
-                number: 10,
+                number: deliverys,
               ),
               SizedBox(width: width*0.05),
               TitleHome(
                 text: 'Clientes\ncadastrados',
-                number: 110,
+                number: clients,
               ),
             ],
           ),
@@ -51,12 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TitleHome(
                 text: 'Pedidos\nrealizados',
-                number: 233,
+                number: requests,
               ),
               SizedBox(width: width*0.05),
               TitleHome(
                 text: 'Alimentos\nsalvos',
-                number: 514,
+                number: foods,
               ),
             ],
           )
